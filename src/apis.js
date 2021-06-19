@@ -8,7 +8,7 @@ export const login = async ({id, pw}) => {
 	}
 	let res;
 	try{
-		res = await axios.post('/login',{
+		res = await axios.post('http://kimtahen.iptime.org/login',{
 			id: id,
 			pw: pw,
 		});
@@ -20,8 +20,17 @@ export const login = async ({id, pw}) => {
 export const sessionLogin = async () => {
 	let res;
 	try {
-		res = await axios.post('/sessionlogin',{
+		res = await axios.post('http://kimtahen.iptime.org/sessionlogin',{
 		});
+	}catch(err){
+		console.log(err);
+	}
+	return res.data;
+}
+export const logout = async () => {
+	let res;
+	try {
+		res = await axios.post('http://kimtahen.iptime.org/logout',{});
 	}catch(err){
 		console.log(err);
 	}

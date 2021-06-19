@@ -1,18 +1,16 @@
 const express = require('express');
 const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const bodyParser = require('body-parser');
-const path = require('path');
-const http = require("http").createServer(app);
-const io = require('socket.io')(http, {
-	path: '/socket.io'
-});
+const path = require('path')
 let user = {
 	user_id: 'kim',
 	user_pwd: '0347',
 }
-const port = 8000;
+const port = 80;
 
 //middleware
 app.use(express.static(path.join(__dirname, '../build')));
@@ -23,13 +21,22 @@ app.use(session({
 	resave: false,
 	store: new FileStore()
 }));
-//routing
+//socket io
+io.on("connection", (socket) => {
+	console.log('connected');
+	io.emit("global", 'hello client');
+	socket.on('write',(data)=>{
+		io.emit('global', data);
+	});
+
+});
 app.get('/',(req,res)=>{
 	res.sendFile(path.join(__dirname,'../build/index.html'));
 });
 app.get('/host',(req,res)=>{
 	res.sendFile(path.join(__dirname,'../build/index.html'));
 });
+
 
 app.post('/login',(req, res) => {
 	console.log(req.body);
@@ -50,12 +57,12 @@ app.post('/sessionlogin', (req, res)=>{
 		res.send({isAuth: false});
 	}
 });
-
-//socket io
-io.on("connection", (socket) => {
-	io.emit("global", 'hello client');
-
+app.post('/logout', (req, res) => {
+	req.session.logined = false;
+	res.send({isAuth: false});
 });
+
+
 http.listen(port, ()=>{
 	console.log(`${port}`);
 })
