@@ -10,19 +10,18 @@ const Paper = () => {
 	useEffect(()=>{
 		socket = io.connect('http://kimtahen.iptime.org');
 	},[]);
+	let markdown;
+	let editorInstance
 	const editorInput = (e) => {
-		const editorInstance = editorRef.current.getInstance();
-		socket.emit('write',editorInstance.getMarkdown())
+		editorInstance = editorRef.current.getInstance();
+		markdown = editorInstance.getMarkdown();
+		setEditText(markdown);
+		if(markdown.charAt(markdown.length-1) == " " || markdown.charAt(markdown.length-1).match(/\n/))
+			socket.emit('write',markdown)
 	}
-	const textInput = (e) => {
-		setText(e.target.value);
-		socket.emit('write',e.target.value);
-	}
-
 	
 	return (
 		<div>
-			<input style={{width: '100%', }} onChange={textInput}/>	
 			<Editor
 				previewStyle="vertical"
 				height="300px"
@@ -32,6 +31,7 @@ const Paper = () => {
 				onChange={editorInput}
 				ref={editorRef}
 			/>
+			{editText}
 		</div>
 	)
 }

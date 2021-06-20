@@ -22,10 +22,12 @@ app.use(session({
 	store: new FileStore()
 }));
 //socket io
+let tempData='';
 io.on("connection", (socket) => {
 	console.log('connected');
-	io.emit("global", 'hello client');
+	io.emit("global", tempData);
 	socket.on('write',(data)=>{
+		tempData=''
 		io.emit('global', data);
 	});
 
