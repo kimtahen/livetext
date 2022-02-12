@@ -10,7 +10,7 @@ let user = {
 	user_id: 'kim',
 	user_pwd: '0347',
 }
-const port = 80;
+const port = 8080;
 
 //middleware
 app.use(express.static(path.join(__dirname, '../build')));

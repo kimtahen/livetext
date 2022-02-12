@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as config from './config';
 const fetch = require('node-fetch');
 
 export const login = async ({id, pw}) => {
@@ -8,7 +9,7 @@ export const login = async ({id, pw}) => {
 	}
 	let res;
 	try{
-		res = await axios.post('http://kimtahen.iptime.org/login',{
+		res = await axios.post(config.SERVER_URL+'/login',{
 			id: id,
 			pw: pw,
 		});
@@ -20,7 +21,7 @@ export const login = async ({id, pw}) => {
 export const sessionLogin = async () => {
 	let res;
 	try {
-		res = await axios.post('http://kimtahen.iptime.org/sessionlogin',{
+		res = await axios.post(config.SERVER_URL+'/sessionlogin',{
 		});
 	}catch(err){
 		console.log(err);
@@ -30,7 +31,7 @@ export const sessionLogin = async () => {
 export const logout = async () => {
 	let res;
 	try {
-		res = await axios.post('http://kimtahen.iptime.org/logout',{});
+		res = await axios.post(config.SERVER_URL+'/logout',{});
 	}catch(err){
 		console.log(err);
 	}

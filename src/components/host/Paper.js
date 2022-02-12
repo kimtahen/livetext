@@ -2,13 +2,16 @@ import React, {useEffect, useRef, useState} from 'react'
 import io from 'socket.io-client';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import {Editor} from '@toast-ui/react-editor';
+
+import * as config from '../../config';
+
 let socket;
 const Paper = () => {
 	const [text, setText] = useState('');
 	const [editText, setEditText] = useState('');
 	const editorRef = useRef();
 	useEffect(()=>{
-		socket = io.connect('http://kimtahen.iptime.org');
+		socket = io.connect(config.SERVER_URL);
 	},[]);
 	let markdown;
 	let editorInstance
